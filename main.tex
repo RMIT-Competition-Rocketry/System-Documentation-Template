@@ -64,6 +64,10 @@
 \newcommand{\setsysname}[1]{\def\sysname{#1}}
 \newcommand{\sysname}{}
 
+% Define \setorglabel to store the organisation label
+\newcommand{\setorglabel}[1]{\def\orglabel{\MakeUppercase{#1}}}
+\newcommand{\orglabel}{}
+
 % ======================================================================================
 %                                    HEADER/FOOTER
 % ======================================================================================
@@ -84,7 +88,7 @@
 
 % Change header/footer text & logo (use odds for single side)
 \makeoddhead{ruled}{\textbf{\docname}}{}{\textbf{\rightmark}}
-\makeoddfoot{ruled}{\small \thepage/\pageref{LastPage}}{\small RMIT IREC 2025}{\includesvg[width=100pt]{./img/logo.svg}}
+\makeoddfoot{ruled}{\small \thepage/\pageref{LastPage}}{\small \orglabel}{\includesvg[width=100pt]{./img/logo.svg}}
 
 % ======================================================================================
 %                                      SECTIONING
@@ -311,7 +315,7 @@
   \centering
   {\Huge #1 Documentation\par}\\[\baselineskip]
   {\huge #2}\par\vspace{1em}
-  {\small RMIT IREC 2025}\par
+  {\small \orglabel}\par
   \endgroup}
 
 % CHANGE DOCUMENT INFORMATION
@@ -344,6 +348,7 @@
 
   % !!!! THESE ARE DOCUMENT SPECIFIC !!!!
   % !!! CHANGE THESE IN YOUR DOCUMENT !!!
+  \setorglabel{[Org Title]}
   \setsysname{[System Name]}
   \setdocname{[Documentation Title]}
 
