@@ -84,11 +84,11 @@
 
 % Header/footer rules
 \makeheadrule{ruled}{\headwidth}{2\normalrulethickness}
-\makefootrule{ruled}{\headwidth}{2\normalrulethickness}{-0.20in}
+\makefootrule{ruled}{\headwidth}{2\normalrulethickness}{-0.27in}
 
 % Change header/footer text & logo (use odds for single side)
 \makeoddhead{ruled}{\textbf{\docname}}{}{\textbf{\rightmark}}
-\makeoddfoot{ruled}{\small \thepage/\pageref{LastPage}}{\small \orglabel}{\includesvg[width=100pt]{./img/logo.svg}}
+\makeoddfoot{ruled}{\small \thepage/\pageref{LastPage}}{\small \orglabel}{\includesvg[width=150pt]{./img/logo.svg}}
 
 % ======================================================================================
 %                                      SECTIONING
@@ -262,11 +262,11 @@
 \renewcommand{\cftsubsubsectionfont}{\large}          % Make subsubsection titles large
 
 % ToC before entry skip
-\newlength{\tocentryskip}
-\setlength\tocentryskip{0.5em}                        % Standard skip 
-\setlength\cftbeforesectionskip{3\tocentryskip}       % Extra space for sections
-\setlength\cftbeforesubsectionskip{\tocentryskip}     % Standard skip for subsections
-\setlength\cftbeforesubsubsectionskip{\tocentryskip}  % Standard skip for subsubsections
+\newlength{\tocentryspace}
+\setlength\tocentryspace{0.5em}                         % Standard skip 
+\setlength\cftbeforesectionskip{3\tocentryspace}       % Extra space for sections
+\setlength\cftbeforesubsectionskip{\tocentryspace}     % Standard skip for subsections
+\setlength\cftbeforesubsubsectionskip{\tocentryspace}  % Standard skip for subsubsections
 
 % ToC entry num width
 \setlength\cftsectionnumwidth{\tocsecnumwidth}
@@ -313,7 +313,7 @@
 \newcommand*{\titleAM}[2]%
 {\begingroup
   \centering
-  {\Huge #1 Documentation\par}\\[\baselineskip]
+  {\Huge #1 Documentation}\par\vspace{1em}
   {\huge #2}\par\vspace{1em}
   {\small \orglabel}\par
   \endgroup}
@@ -356,7 +356,7 @@
   
   % TITLE
   \vfill{}
-  \titleAM{\sysname}{\docname}  
+  \titleAM{\sysname}{\docname}
   \documentInfo{1.0}{\DTMdate{2024-12-10}}
   \vfill{}
 
