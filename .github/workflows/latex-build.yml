@@ -1,5 +1,9 @@
 name: Build LaTeX document
-on: [push]
+on: 
+  workflow_dispatch:
+  push:
+    paths:
+      - '**.tex'
 jobs:
   build_latex:
     runs-on: ubuntu-latest
@@ -12,16 +16,16 @@ jobs:
           root_file: main.tex
           latexmk_use_xelatex: true
           latexmk_shell_escape: true
-          continue_on_error: true
-          extra_system_packages: "inkscape"
+          extra_system_packages: "inkscape imagemagick ghostscript"
           args: "-pdf -interaction=nonstopmode -f"
+          continue_on_error: true
           pre_compile: "echo 'yes' | apk add msttcorefonts-installer && update-ms-fonts && fc-cache -f"
+          post_compile: "cp main.pdf docs/example.pdf && magick -density 300 docs/example.pdf -quality 85 docs/example-%d.jpg"
       - name: Commit data
         run: |
             ls .
             git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
             git config --local user.name "github-actions[bot]"
-            cp main.pdf docs/example.pdf
             git add docs
             git commit -m "Added latest build"
             git push origin master

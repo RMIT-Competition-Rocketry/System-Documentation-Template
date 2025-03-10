@@ -15,4 +15,7 @@ Editable areas are commented, most edits are made from about line `337` and belo
 
 ## Example Document
 
-![Front page screenshot](docs/example.png)
+<p float='left' align='center'>
+<img src=docs/example-1.jpg width=49% /> 
+<img src=docs/example-4.jpg width=49% />
+</p>
