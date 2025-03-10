@@ -4,7 +4,7 @@
 
 1. Configure your compiler to use `XeLaTeX`
 
-> ![NOTE]
+> [!NOTE]
 > If using VS Code, settings automatically sourced in `.vscode/settings.json` should do this for you
 
 ## Usage
