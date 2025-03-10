@@ -1,0 +1,27 @@
+name: Build LaTeX document
+on: [push]
+jobs:
+  build_latex:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Git repository
+        uses: actions/checkout@v4
+      - name: Compile LaTeX document
+        uses: xu-cheng/latex-action@v3
+        with:
+          root_file: main.tex
+          latexmk_use_xelatex: true
+          latexmk_shell_escape: true
+          continue_on_error: true
+          extra_system_packages: "inkscape"
+          args: "-pdf -interaction=nonstopmode -f"
+          pre_compile: "echo 'yes' | apk add msttcorefonts-installer && update-ms-fonts && fc-cache -f"
+      - name: Commit data
+        run: |
+            ls .
+            git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git config --local user.name "github-actions[bot]"
+            cp main.pdf docs/example.pdf
+            git add docs
+            git commit -m "Added latest build"
+            git push origin master
