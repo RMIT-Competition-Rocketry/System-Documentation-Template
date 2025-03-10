@@ -1,0 +1,99 @@
+\pagestyle{ruled}
+
+\begin{abstract}
+Document descriptions at $\qty{10 000}{\feet}$~\cite{example} and $\qty{30 000}{\feet}$~\cite{example,example2,example3}.
+\end{abstract}
+
+\section{Section}
+
+\subsection{Subsection}
+\subsubsection{Subsubsection}
+\subsubsection{Subsubsection}
+\subsubsection{Subsubsection}
+\subsubsection{Subsubsection}
+
+\subsection{Subsection}
+\subsection{Subsection}
+\subsection{Subsection}
+\subsection{Subsection}
+
+\clearpage
+
+\section{Firmware Architecture}
+\begin{figure}[h]
+    \centering
+    \begin{tikzpicture}
+        % Core ------------------------------------------------------------------------------------
+        \node[element, minimum width=8cm, fill=pastelyellow!50](core){Australis Core};
+        \node[element, minimum width=3cm, above=5mm of core.north, xshift=-2.15cm, fill=pastelgreen!50](core_state){State};
+        \node[element, minimum width=3cm, above=5mm of core.north, xshift=2.15cm, fill=pastelgreen!50](core_devices){Devices};
+        % Core group
+        \begin{pgfonlayer}{background}
+            \node[second_group, fit={(core_state) (core_devices)}](group_rectangle)(inner_main_group){};
+        \end{pgfonlayer}
+        \begin{pgfonlayer}{subbackground}
+            \node[group, fit={(inner_main_group) (core)}, minimum width=4cm](group_rectangle)(main_group){};
+        \end{pgfonlayer}
+        % Extra ------------------------------------------------------------------------------------
+        \node[element, minimum width=3cm, above=12.5mm of core_state.north, fill=pastelyellow!50](extra){Australis Extra};
+        \node[element, minimum width=3cm, above=12.5mm of core_devices.north](target){Target\textsuperscript{1}};
+        % Extra group
+        \begin{pgfonlayer}{background}
+            \node[group, fit={(extra) (target)}, minimum width=8.5cm](group_rectangle)(extra_group){};
+        \end{pgfonlayer}
+        % Legend -----------------------------------------------------------------------------------
+        \node[square, minimum width=4mm, anchor=north west, above=5mm of extra_group.north west, xshift=7mm, draw=black, fill=pastelyellow, label={right:Australis Firmware}](legend_firmware){};
+        \node[square, minimum width=4mm, right=of legend_firmware, xshift=3cm, draw=black, fill=pastelgreen, label={right:Australis Interface}](legend_interface){};
+        % Subscript --------------------------------------------------------------------------------
+        \node[anchor=west](sub) at ([yshift=-7mm, xshift=-2mm]core.south west) {\textsuperscript{1} Target component is implementation specific.};
+        \useasboundingbox (current bounding box);
+        % Labels -----------------------------------------------------------------------------------
+        \node[label, left=of main_group]{Australis Core layer};
+        \node[label, left=of extra_group]{Australis Target layer};
+        % Arrows -----------------------------------------------------------------------------------
+        \draw[-Triangle,thick] (core_state.north) |- ([yshift=-5mm]target.south) -- (target.south);
+        \draw[-Triangle,thick] (core_devices.north) |- ([yshift=-5mm]extra.south) -- (extra.south);
+        \draw[Triangle-Triangle,thick] (extra.east) -- (target.west);
+    \end{tikzpicture}
+    \caption{Australis Firmware system architecture}
+\end{figure}
+
+\clearpage
+
+\section{Memory and Bus Architecture}
+\subsection{System Architecture}
+
+In STM32F405xx/07xx and STM32F415xx/17xx, the main system consists of 32-bit 
+multilayer AHB bus matrix that interconnects:
+\begin{itemize}
+    \item Eight masters:
+    \begin{itemize}
+        \item Cortex\textsuperscript{\textregistered}-M4 with FPU core I-bus, D-bus, and S-bus
+        \item DMA1 memory bus
+        \item DMA2 memory bus
+        \item DMA2 peripheral bus
+        \item Ethernet DMA bus
+        \item USB OTG HS DMA bus
+    \end{itemize}
+    \item Seven slaves:
+    \begin{itemize}
+        \item Internal flash memory ICode bus
+        \item Internal flash memory DCode bus
+        \item Main internal SRAM1 (112 KB)
+        \item Auxiliary internal SRAM2 (16 KB)
+        \item AHB1 peripherals including AHB to APB bridges and APB peripherals
+        \item AHB2 peripherals
+        \item FSMC
+    \end{itemize}
+\end{itemize}
+
+\noindent The bus matrix provides access from a master to a slave, enabling concurrent access and 
+efficient operation even when several high-speed peripherals work simultaneously. 
+The 64-Kbyte CCM (core coupled memory) data RAM is not part of the bus matrix and can be 
+accessed only through the CPU. This architecture is shown in Figure 1.
+
+\vfill{}
+\begin{center}
+EXAMPLE DOCUMENT \\ \small (totally not stolen from RM0090)
+\end{center}
+\vfill{}

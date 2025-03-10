@@ -1,0 +1,401 @@
+\documentclass[a4paper, oneside, british]{memoir}
+\usepackage[datesep=/]{datetime2}
+
+\usepackage{hyperref}
+\PassOptionsToPackage{hidelinks}{hyperref}
+\hypersetup{pdfborder=0 0 0}
+
+\usepackage[backend=biber, style=ieee]{biblatex}
+\addbibresource{main.bib}
+
+\usepackage{fontspec}
+\setmainfont{Arial}
+\newfontfamily{\fauna}{FAUNA}[Path = fonts/, Extension = .ttf, UprightFont = *-THIN]
+
+\usepackage{cascadia-code}
+
+\usepackage{lastpage}
+\usepackage{pgfplots}
+\usepackage{geometry}
+\usepackage{bookmark}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{calc}
+\usepackage{longtable}
+\usepackage{graphicx}
+\usepackage{wrapfig}
+\usepackage{listings}
+\usepackage{amsmath}
+\usepackage{bytefield}
+\usepackage{pdfpages}
+\usepackage{tikz}
+\usepackage{tabularx}
+\usepackage{amsmath}
+\usepackage{array}
+\usepackage{titlesec}
+\usepackage{varwidth}
+\usepackage{bytefield}
+\usepackage{siunitx}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{tcolorbox}
+\usepackage{bm}
+\usepackage{svg}
+\usepackage{lipsum}
+\usepackage{fontawesome}
+
+\pagestyle{empty}
+
+% ======================================================================================
+%                                         MISC
+% ======================================================================================
+
+\setlist[itemize]{noitemsep}
+\setlist[itemize, 1]{align=parleft,left=0pt..1em, label={\Large\textbullet}}
+
+\sisetup{group-separator = {,}}
+\DeclareSIUnit{\feet}{ft}
+
+% Define \setdocname to store the document name
+\newcommand{\setdocname}[1]{\def\docname{#1}}
+\newcommand{\docname}{}
+
+% Define \setsysname to store the system name
+\newcommand{\setsysname}[1]{\def\sysname{#1}}
+\newcommand{\sysname}{}
+
+% ======================================================================================
+%                                    HEADER/FOOTER
+% ======================================================================================
+
+% Remove chapter/section number from rightmark
+\makepsmarks{ruled}{%
+ \nouppercaseheads
+ \createmark{chapter}{right}{nonumber}{}{}
+ \createmark{section}{right}{nonumber}{}{}
+}
+
+% Make header/footer rules full headwidth
+\makerunningwidth{ruled}{\headwidth}
+
+% Header/footer rules
+\makeheadrule{ruled}{\headwidth}{2\normalrulethickness}
+\makefootrule{ruled}{\headwidth}{2\normalrulethickness}{-0.20in}
+
+% Change header/footer text & logo (use odds for single side)
+\makeoddhead{ruled}{\textbf{\docname}}{}{\textbf{\rightmark}}
+\makeoddfoot{ruled}{\small \thepage/\pageref{LastPage}}{\small RMIT IREC 2025}{\includesvg[width=100pt]{./img/logo.svg}}
+
+% ======================================================================================
+%                                      SECTIONING
+% ======================================================================================
+
+% Set margins
+%\setlrmarginsandblock{1in}{1in}{*} 
+\setlrmarginsandblock{1.25in}{1.25in}{*} 
+\setulmarginsandblock{1.25in}{1.25in}{*} 
+\checkandfixthelayout%
+
+% Define length to dedent text from margin to header width
+\newlength{\margindedent}
+\setlength{\margindedent}{0.5\textwidth-0.5\headwidth}
+
+% Section title format 
+\titleformat*{\section}{\huge\bfseries}
+\titleformat*{\subsection}{\Large\bfseries}
+\titleformat*{\subsubsection}{\large\bfseries}
+
+% Section number format
+\renewcommand{\thesection}{\arabic{section}}
+\renewcommand{\thefigure}{\arabic{section}.\arabic{figure}}
+\renewcommand{\thetable}{\arabic{table}}
+\renewcommand{\abstractname}{Introduction}
+
+% Label figures within sections
+\numberwithin{figure}{section}
+
+% Numbering
+\setsecnumformat{\csname the#1\endcsname\hspace{0.5in-\widthof{\csname the#1\endcsname}}}
+\setsecnumdepth{paragraph}
+
+% Indentation
+\setsecindent{1\margindedent}
+\setsubsecindent{1\margindedent}
+\setsubsubsecindent{1\margindedent}
+
+\setlength{\absleftindent}{0em}
+\setlength{\absrightindent}{0em}
+
+\renewcommand{\baselinestretch}{1.125} % Scale baselineskip length
+% \setlength{\parskip}{0.5em}          % Adjust paragraph spacing
+
+% ======================================================================================
+%                                      LISTINGS
+% ======================================================================================
+
+\lstset{language=C++,
+        basicstyle=\ttfamily,
+        keywordstyle=\color{blue}\ttfamily,
+        stringstyle=\color{red}\ttfamily,
+        commentstyle=\color{lightgreen}\ttfamily,
+        morecomment=[l][\color{magenta}]{\#},
+        numbers = left,
+        breaklines = true
+}
+
+% Suppress numbering
+\let\origthelstnumber\thelstnumber
+\makeatletter
+\newcommand*\Suppressnumber{%
+  \lst@AddToHook{OnNewLine}{%
+    \let\thelstnumber\relax%
+  }%
+}
+
+% Restore numbering
+\newcommand*\Reactivatenumber{%
+  \lst@AddToHook{OnNewLine}{%
+   \let\thelstnumber\origthelstnumber%
+  }%
+}
+\makeatother
+
+% ======================================================================================
+%                                          TIKZ
+% ======================================================================================
+
+\newenvironment{xcenter}
+ {\par\setbox0=\hbox\bgroup\ignorespaces}
+ {\unskip\egroup\noindent\makebox[\textwidth]{\box0}\par}
+
+\usetikzlibrary{positioning,fit,calc,chains,matrix,arrows.meta,shapes.geometric,arrows,backgrounds}
+
+\pgfdeclarelayer{subbackground}
+\pgfdeclarelayer{background}
+\pgfdeclarelayer{foreground}
+\pgfsetlayers{subbackground,background,main,foreground}
+
+\tikzstyle{square} = [regular polygon, regular polygon sides=4, draw=black, inner sep=0cm, align=center]
+
+% Flowchart shapes
+\tikzstyle{start} = [rectangle, rounded corners, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=green!30]
+\tikzstyle{stop} = [rectangle, rounded corners, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=red!50]
+\tikzstyle{process} = [rectangle, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=orange!80, text=white]
+\tikzstyle{decision} = [diamond, minimum width=3cm, minimum height=3cm, text centered, draw=black, fill=blue!50, text=white]
+\tikzstyle{arrow} = [thick,->,>=stealth, draw=blue, text=blue]
+
+\tikzstyle{board} = [
+  rectangle, dashed, very thick, rounded corners, 
+  minimum width=1cm, minimum height=1cm, inner sep=0.25cm,
+  draw=gray
+]
+\tikzstyle{group} = [
+  rectangle, very thick, rounded corners, 
+  minimum width=1cm, minimum height=1cm, inner sep=0.25cm,
+  draw=gray, fill=gray!25
+]
+\tikzstyle{second_group} = [
+  rectangle, dashed, very thick, rounded corners, 
+  minimum width=1cm, minimum height=1cm, inner sep=0.25cm,
+  draw=gray, fill=white!5
+]
+
+\tikzstyle{element} = [rectangle, rounded corners, text centered, draw=black, minimum width=2cm, minimum height=1cm, fill=white]
+
+\tikzstyle{register} = [rectangle, rounded corners, text centered, draw=black, minimum width=3cm, minimum height=1cm, fill=white]
+\tikzstyle{inout} = [trapezium, draw=black, minimum width=2cm, fill=white]
+
+% Colours
+\definecolor{bittersweet}{rgb}{1.0, 0.44, 0.37}
+\definecolor{aquamarine}{rgb}{0.5, 1.0, 0.83}
+\definecolor{lavender}{rgb}{0.9, 0.9, 0.98}
+\definecolor{whitesmoke}{rgb}{0.96, 0.96, 0.96}
+\definecolor{pastelred}{RGB}{242,220,218}
+\definecolor{pastelgreen}{RGB}{216,227,192}
+\definecolor{pastelyellow}{RGB}{254,242,205}
+\definecolor{lightgreen}{RGB}{102,153,0}    %#669900
+
+% ======================================================================================
+%                                   TABLE OF CONTENTS
+% ======================================================================================
+\makeatletter
+\renewcommand{\@pnumwidth}{-3em}
+\renewcommand{\@tocrmarg}{-4em}
+\makeatother
+ 
+% Lengths
+% -------------------------------------------------------------------------
+% Defines the width of a section number in the ToC
+\newlength{\tocsecnumwidth}
+\setlength\tocsecnumwidth{10ex}
+
+% Defines the standard width of a subsection number in the ToC
+\newlength{\tocsubsecnumwidth}
+\setlength\tocsubsecnumwidth{7ex}
+
+% This is a useful shorthand for defining the indents of entry
+% titles as offsets from the top level title indent
+\def\tocentrytitleindent#1{\margindedent + \tocsecnumwidth + #1}
+% -------------------------------------------------------------------------
+
+\renewcommand*{\tocheadstart}{\vspace*{-1em}}
+\renewcommand*{\aftertoctitle}{\vspace*{-0.5em}}
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{3}
+
+% Make section trailing dots bold in ToC
+\renewcommand{\cftsectionleader}{\bfseries\cftdotfill{\cftdotsep}}
+
+% ToC title format
+\renewcommand\contentsname{\textbf{Contents}}         % Make title bold
+\renewcommand{\printtoctitle}[1]{                     % Head align ToC title
+    \hspace{\margindedent}\huge #1\vspace{1em}
+} 
+
+% ToC entry format
+\renewcommand{\cftsectionfont}{\Large\bfseries}       % Make section titles bold and Large
+\renewcommand{\cftsubsectionfont}{\large}             % Make subsection titles large
+\renewcommand{\cftsubsubsectionfont}{\large}          % Make subsubsection titles large
+
+% ToC before entry skip
+\newlength{\tocentryskip}
+\setlength\tocentryskip{0.5em}                        % Standard skip 
+\setlength\cftbeforesectionskip{3\tocentryskip}       % Extra space for sections
+\setlength\cftbeforesubsectionskip{\tocentryskip}     % Standard skip for subsections
+\setlength\cftbeforesubsubsectionskip{\tocentryskip}  % Standard skip for subsubsections
+
+% ToC entry num width
+\setlength\cftsectionnumwidth{\tocsecnumwidth}
+\setlength\cftsubsectionnumwidth{\tocsubsecnumwidth}
+\setlength\cftsubsubsectionnumwidth{\tocsubsecnumwidth + 1ex}
+
+% ToC entry title indentation
+\setlength\cftsectionindent{\margindedent}
+\setlength\cftsubsectionindent{\tocentrytitleindent{0pt}}
+\setlength\cftsubsubsectionindent{\tocentrytitleindent{\cftsubsectionnumwidth}}
+
+\setlength\cftbeforechapterskip{0pt}
+
+% List of equations
+\newcommand{\listequationsname}{List of Equations}
+\newlistof{listofequations}{equ}{\listequationsname}
+\newcommand{\myequation}[1]{%
+	\addcontentsline{equ}{equation}{\protect\numberline{\theequation}#1}\par
+}
+\makeatletter
+\let\l@equation\l@figure
+\makeatother
+
+% Add lists
+\addtocontents{lot}{\vskip -1.2cm} % List of tables
+\addtocontents{equ}{\vskip -1.2cm} % List of equations
+
+% ======================================================================================
+% =                                                                                    = 
+% =                                 BIBLIOGRAPHY                                       =
+% =                                                                                    =
+% ======================================================================================
+
+% Bibliography heading
+\defbibheading{references}[References]{%
+ \clearpage\section{#1}
+}
+
+% ======================================================================================
+%                                      TITLE FORMAT
+% ======================================================================================
+
+% CHANGE TITLE FORMATTING
+\newcommand*{\titleAM}[2]%
+{\begingroup
+  \centering
+  {\Huge #1 Documentation\par}\\[\baselineskip]
+  {\huge #2}\par\vspace{1em}
+  {\small RMIT IREC 2025}\par
+  \endgroup}
+
+% CHANGE DOCUMENT INFORMATION
+\newcommand*{\documentInfo}[2]%
+{\begingroup
+  \centering
+  \begin{table}[h]
+  \centering
+  \begin{tabularx}{0.5\textwidth}{@{}X@{}}
+    Version      \dotfill #1     \\
+    Last Updated \dotfill \today \\
+    Date Created \dotfill #2     
+  \end{tabularx}
+  \end{table}
+  \endgroup}
+
+% ======================================================================================
+% =                                                                                    = 
+% =                                 DOCUMENT BODY                                      =
+% =                                                                                    =
+% ======================================================================================
+
+% !!!!!!!!!!!!!!!!!!!!!!!!!!!!! %
+% DELETE THESE IN YOUR DOCUMENT %
+% !!!!!!!!!!!!!!!!!!!!!!!!!!!!! %
+\usepackage{draftwatermark}
+\SetWatermarkText{}
+
+\begin{document}
+
+  % !!!! THESE ARE DOCUMENT SPECIFIC !!!!
+  % !!! CHANGE THESE IN YOUR DOCUMENT !!!
+  \setsysname{[System Name]}
+  \setdocname{[Documentation Title]}
+
+  \noindent\makebox[\textwidth]{\includegraphics[width=\headwidth]{./img/banner.png}}
+  
+  % TITLE
+  \vfill{}
+  \titleAM{\sysname}{\docname}  
+  \documentInfo{1.0}{\DTMdate{2024-12-10}}
+  \vfill{}
+
+  % CHANGELOG
+  \begin{table}[h]
+  \centering
+  \begin{tabularx}{\textwidth}{lll}
+  Date & Changes Made & Made By \\
+  \midrule
+  \DTMdisplaydate{2024}{12}{4}{-1} & Create initial document & Matthew Ricci\\
+  \midrule
+  \end{tabularx}
+  \end{table}  
+
+  \vfill{}
+  \noindent\makebox[\textwidth]{\includegraphics[width=\headwidth]{./img/footer.png}}
+
+  %     This is for adding any document content unrelated to title/contents pages 
+  % ⌄⌄⌄ to place before the table of contents itself
+  \clearpage
+  \input{precontent}
+  \clearpage
+
+  % !!!!!!!!!!!!!!!!!!!!!!!!!!!! %
+  % DELETE THIS IN YOUR DOCUMENT %
+  % !!!!!!!!!!!!!!!!!!!!!!!!!!!! %
+  \SetWatermarkText{EXAMPLE}
+
+  % CONTENTS
+  \clearpage
+  \tableofcontents*
+  \thispagestyle{ruled}
+
+  % MAIN DOCUMENT
+  \clearpage
+  \markboth{}{}
+  \input{content}
+
+  % REFERENCES
+  \renewcommand*{\UrlFont}{\rmfamily}
+  \printbibliography[heading=references]
+
+  % APPENDIX
+  \clearpage
+  \input{appendix}
+
+\end{document}
