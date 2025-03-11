@@ -363,14 +363,21 @@
   \setsysname{Example System}
   \setdocname{Document Title}
 
+  % COVER PAGE
+  % ----------------------------------------------------------------------------------
+
   \vspace*{-1in}
   \noindent\makebox[\textwidth]{\includegraphics[width=\paperwidth]{./img/banner.png}}
 
+  % COVER PAGE INTRODUCTION
+  % !!! CHANGE THIS IN YOUR DOCUMENT !!!
   \section*{\hspace{-\margindedent}Introduction}
   \noindent\lipsum[1][1-5]\\[0.5em]
   \noindent\lipsum[1][5-8]\\[0.5em]
   \noindent\lipsum[1][8-13]
-
+  
+  % COVER PAGE RELATED DOCUMENTS
+  % !!! CHANGE THIS IN YOUR DOCUMENT !!!
   \section*{\hspace{-\margindedent}Related Documents}
   Available from [repository name] (\url{https://www.github.com/repo-name}):
   \vspace{-0.5em}
@@ -381,12 +388,19 @@
     \item Test criteria and evaluation
     \item The Holy Bible
   \end{itemize}
-
+  
+  % COVER PAGE ACKNOWLEDGEMENTS
+  % !!! CHANGE THIS IN YOUR DOCUMENT !!!
   \section*{\hspace{-\margindedent}Acknowledgements}
   \noindent\lipsum[1][1-8]\\[0.5em]
   \noindent\lipsum[1][8-14]
 
   \clearpage
+
+  % ----------------------------------------------------------------------------------
+
+  % DOCUMENT INFO
+  % ----------------------------------------------------------------------------------
   
   \vspace*{\fill}
   
@@ -412,6 +426,8 @@
   \clearpage
   \input{precontent}
   \clearpage
+  
+  % ----------------------------------------------------------------------------------
 
   % CONTENTS
   \tableofcontents*
