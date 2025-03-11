@@ -51,10 +51,17 @@
 % ======================================================================================
 
 \setlist[itemize]{noitemsep}
-\setlist[itemize, 1]{align=parleft,left=0pt..1em, label={\Large\textbullet}}
+\setlist[itemize, 1]{itemsep=0.5em,align=parleft,left=0pt..1.5em, label={\Large\textbullet}}
 
-\sisetup{group-separator = {,}}
-\DeclareSIUnit{\feet}{ft}
+% Set up SI units
+\sisetup{group-separator = {,}} % Separate groups with comma (i.e. 1,000,000)
+\DeclareSIUnit{\feet}{ft}       % Add custom non SI unit for feet 
+
+% Date style to display only the year
+\DTMnewdatestyle{yearonly}{%
+    \renewcommand{\DTMdisplaydate}[4]{\number##1}
+    \renewcommand{\DTMDisplaydate}{\DTMdisplaydate}
+}
 
 % Define \setdocname to store the document name
 \newcommand{\setdocname}[1]{\def\docname{#1}}
@@ -65,7 +72,7 @@
 \newcommand{\sysname}{}
 
 % Define \setorglabel to store the organisation label
-\newcommand{\setorglabel}[1]{\def\orglabel{\MakeUppercase{#1}}}
+\newcommand{\setorglabel}[1]{\def\orglabel{#1}}
 \newcommand{\orglabel}{}
 
 % ======================================================================================
@@ -131,7 +138,7 @@
 \setlength{\absrightindent}{0em}
 
 \renewcommand{\baselinestretch}{1.125} % Scale baselineskip length
-% \setlength{\parskip}{0.5em}          % Adjust paragraph spacing
+\setlength{\parskip}{0.5em}            % Adjust paragraph spacing
 
 % ======================================================================================
 %                                      LISTINGS
@@ -315,7 +322,7 @@
   \centering
   {\Huge #1 Documentation}\par\vspace{1em}
   {\huge #2}\par\vspace{1em}
-  {\small \orglabel}\par
+  {\small {\DTMsetdatestyle{yearonly}\today} \orglabel}\par
   \endgroup}
 
 % CHANGE DOCUMENT INFORMATION
@@ -348,22 +355,45 @@
 
   % !!!! THESE ARE DOCUMENT SPECIFIC !!!!
   % !!! CHANGE THESE IN YOUR DOCUMENT !!!
-  \setorglabel{[Org Title]}
-  \setsysname{[System Name]}
-  \setdocname{[Documentation Title]}
+  \setorglabel{Example Organisation} 
+  \setsysname{Example System}
+  \setdocname{Document Title}
 
-  \noindent\makebox[\textwidth]{\includegraphics[width=\headwidth]{./img/banner.png}}
+  \vspace*{-1in}
+  \noindent\makebox[\textwidth]{\includegraphics[width=\paperwidth]{./img/banner.png}}
+
+  \section*{\hspace{-\margindedent}Introduction}
+  \noindent\lipsum[1][1-5]\\[0.5em]
+  \noindent\lipsum[1][5-8]\\[0.5em]
+  \noindent\lipsum[1][8-13]
+
+  \section*{\hspace{-\margindedent}Related Documents}
+  Available from [repository name] (\url{https://www.github.com/repo-name}):
+  \vspace{-0.5em}
+  \begin{itemize}
+    \item Technical reference
+    \item Hardware manual
+    \item Design review
+    \item Test criteria and evaluation
+    \item The Holy Bible
+  \end{itemize}
+
+  \section*{\hspace{-\margindedent}Acknowledgements}
+  \noindent\lipsum[1][1-8]\\[0.5em]
+  \noindent\lipsum[1][8-14]
+
+  \clearpage
+  
+  \vspace*{\fill}
   
   % TITLE
-  \vfill{}
   \titleAM{\sysname}{\docname}
-  \documentInfo{1.0}{\DTMdate{2024-12-10}}
-  \vfill{}
+  \documentInfo{1.0}{\DTMdate{2025-03-11}}
 
   % CHANGELOG
   \begin{table}[h]
   \centering
-  \begin{tabularx}{\textwidth}{lll}
+  \begin{tabularx}{0.6\textwidth}{lll}
   Date & Changes Made & Made By \\
   \midrule
   \DTMdisplaydate{2024}{12}{4}{-1} & Create initial document & Matthew Ricci\\
@@ -371,22 +401,20 @@
   \end{tabularx}
   \end{table}  
 
-  \vfill{}
-  \noindent\makebox[\textwidth]{\includegraphics[width=\headwidth]{./img/footer.png}}
-
+  \vspace*{\fill}
+  
   %     This is for adding any document content unrelated to title/contents pages 
   % ⌄⌄⌄ to place before the table of contents itself
   \clearpage
   \input{precontent}
   \clearpage
-
+  
   % !!!!!!!!!!!!!!!!!!!!!!!!!!!! %
   % DELETE THIS IN YOUR DOCUMENT %
   % !!!!!!!!!!!!!!!!!!!!!!!!!!!! %
   \SetWatermarkText{EXAMPLE}
 
   % CONTENTS
-  \clearpage
   \tableofcontents*
   \thispagestyle{ruled}
 

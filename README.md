@@ -13,9 +13,11 @@
 
 Editable areas are commented, most edits are made from about line `337` and below in `main.tex`
 
-## Example Document
+## Example Pages
 
 <p float='left' align='center'>
-<img src=docs/example-1.jpg width=49% /> 
-<img src=docs/example-4.jpg width=49% />
+<img src=docs/example-0.jpg width=49% /> 
+<br/>
+<img src=docs/example-2.jpg width=49% /> 
+<img src=docs/example-5.jpg width=49% />
 </p>
