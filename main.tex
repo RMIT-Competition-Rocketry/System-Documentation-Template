@@ -10,6 +10,7 @@
 
 \usepackage{fontspec}
 \setmainfont{Arial}
+\newfontfamily{\arial}{Arial}
 \newfontfamily{\fauna}{FAUNA}[Path = fonts/, Extension = .ttf, UprightFont = *-THIN]
 
 \usepackage{cascadia-code}
@@ -345,11 +346,14 @@
 % =                                                                                    =
 % ======================================================================================
 
-% !!!!!!!!!!!!!!!!!!!!!!!!!!!!! %
-% DELETE THESE IN YOUR DOCUMENT %
-% !!!!!!!!!!!!!!!!!!!!!!!!!!!!! %
-\usepackage{draftwatermark}
-\SetWatermarkText{}
+% !!!!!!!!!!!!!!!!!!!!!!!!!!!! %
+% DELETE THIS IN YOUR DOCUMENT %
+% !!!!!!!!!!!!!!!!!!!!!!!!!!!! %
+\AddToHook{shipout/foreground}{
+  \begin{tikzpicture}[remember picture,overlay]
+    \node[black,rotate=30,scale=15,opacity=0.15] at (current page.center) {EXAMPLE}; 
+  \end{tikzpicture}
+}
 
 \begin{document}
 
@@ -408,11 +412,6 @@
   \clearpage
   \input{precontent}
   \clearpage
-  
-  % !!!!!!!!!!!!!!!!!!!!!!!!!!!! %
-  % DELETE THIS IN YOUR DOCUMENT %
-  % !!!!!!!!!!!!!!!!!!!!!!!!!!!! %
-  \SetWatermarkText{EXAMPLE}
 
   % CONTENTS
   \tableofcontents*
