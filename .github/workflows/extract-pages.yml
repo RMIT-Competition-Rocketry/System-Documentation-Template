@@ -4,10 +4,10 @@ jobs:
   extract_pages:
     runs-on: ubuntu-latest
     steps:
-      - name: Install Packages
-        run: sudo apt-get -y install imagemagick ghostscript
-      - name: Extract Page Images
-        run: magick -density 300 docs/example.pdf -quality 85 docs/example-%d.jpg
+      - name: Install Packages & Extract Page Images
+        run: |
+            sudo apt-get -y install imagemagick ghostscript
+            magick -density 300 docs/example.pdf -quality 85 docs/example-%d.jpg
       - name: Commit Change
         run: |
             git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
