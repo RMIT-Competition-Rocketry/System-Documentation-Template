@@ -20,7 +20,7 @@ jobs:
           args: "-pdf -interaction=nonstopmode -f"
           continue_on_error: true
           pre_compile: "echo 'yes' | apk add msttcorefonts-installer && update-ms-fonts && fc-cache -f"
-          post_compile: "cp main.pdf docs/example.pdf && magick -density 300 docs/example.pdf -quality 85 docs/example-%d.jpg"
+          post_compile: "cp main.pdf docs/example.pdf && magick -density 300 docs/example.pdf -quality 85 -alpha remove docs/example-%d.jpg"
       - name: Commit data
         run: |
             ls .
