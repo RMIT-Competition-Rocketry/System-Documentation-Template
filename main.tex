@@ -13,6 +13,8 @@
 \newfontfamily{\arial}{Arial}
 \newfontfamily{\fauna}{FAUNA}[Path = fonts/, Extension = .ttf, UprightFont = *-THIN]
 
+% You may need to use this instead if building locally
+%\newfontfamily{\cascadia}{cascadiacode}
 \usepackage{cascadia-code}
 
 \usepackage{lastpage}
@@ -39,11 +41,13 @@
 \usepackage{siunitx}
 \usepackage{hyperref}
 \usepackage{graphicx}
-\usepackage{tcolorbox}
+\usepackage[table]{xcolor}
+\usepackage[most]{tcolorbox}
 \usepackage{bm}
 \usepackage{svg}
 \usepackage{lipsum}
-\usepackage{fontawesome}
+\usepackage{fontawesome5}
+\usepackage{caption}
 
 \pagestyle{empty}
 
@@ -63,6 +67,10 @@
     \renewcommand{\DTMdisplaydate}[4]{\number##1}
     \renewcommand{\DTMDisplaydate}{\DTMdisplaydate}
 }
+
+% Allow proper colouring of table rows
+\newcounter{tblerows}
+\expandafter\let\csname c@tblerows\endcsname\rownum
 
 % Define \setdocname to store the document name
 \newcommand{\setdocname}[1]{\def\docname{#1}}
@@ -140,6 +148,8 @@
 
 \renewcommand{\baselinestretch}{1.125} % Scale baselineskip length
 \setlength{\parskip}{0.5em}            % Adjust paragraph spacing
+\setlength{\parindent}{0em}
+
 
 % ======================================================================================
 %                                      LISTINGS
@@ -351,7 +361,7 @@
 % !!!!!!!!!!!!!!!!!!!!!!!!!!!! %
 \AddToHook{shipout/foreground}{
   \begin{tikzpicture}[remember picture,overlay]
-    \node[black,rotate=30,scale=15,opacity=0.15] at (current page.center) {EXAMPLE}; 
+    \node[black,rotate=30,scale=15,opacity=0.1] at (current page.center) {EXAMPLE}; 
   \end{tikzpicture}
 }
 
@@ -379,7 +389,7 @@
   % COVER PAGE RELATED DOCUMENTS
   % !!! CHANGE THIS IN YOUR DOCUMENT !!!
   \section*{\hspace{-\margindedent}Related Documents}
-  Available from [repository name] (\url{https://www.github.com/repo-name}):
+  Available from \url{https://www.github.com/repo-name}:
   \vspace{-0.5em}
   \begin{itemize}
     \item Technical reference
@@ -408,17 +418,6 @@
   \titleAM{\sysname}{\docname}
   \documentInfo{1.0}{\DTMdate{2025-03-11}}
 
-  % CHANGELOG
-  \begin{table}[h]
-  \centering
-  \begin{tabularx}{0.6\textwidth}{lll}
-  Date & Changes Made & Made By \\
-  \midrule
-  \DTMdisplaydate{2024}{12}{4}{-1} & Create initial document & Matthew Ricci\\
-  \midrule
-  \end{tabularx}
-  \end{table}  
-
   \vspace*{\fill}
   
   %     This is for adding any document content unrelated to title/contents pages 
@@ -441,6 +440,10 @@
   % REFERENCES
   \renewcommand*{\UrlFont}{\rmfamily}
   \printbibliography[heading=references]
+  \clearpage
+  
+  % CHANGELOG
+  \input{changelog}
 
   % APPENDIX
   \clearpage

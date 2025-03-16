@@ -1,62 +1,95 @@
 \pagestyle{ruled}
 
-\begin{abstract}
-Document descriptions at $\qty{10 000}{\feet}$~\cite{example} and $\qty{30 000}{\feet}$~\cite{example,example2,example3}.
-\end{abstract}
+\phantomsection
+\section*{Important Terms}
+\addcontentsline{toc}{section}{Important Terms}
+\begin{description}[leftmargin=8em,style=multiline]
+    \item[Australis] Student developed flight computer hardware platform for high power rockets.
+    \item[Australis Core] An internal component providing the base API and critical logic; stylised \verb|core|.
+    \item[Australis Extra] An internal component providing modular systems that may be optionally included to extend core functionality; stylised \verb|extra|.
+    \item[Australis Firmware] Flight computer firmware system for high power rockets; designed for, but not limited to, deployment on Australis targets.
+    \item[Component] A collection of semantically related code groups and files within the Australis Firmware ecosystem.
+    \item[Device] A hardware element external to the controller that provides additional functionality via a connected interface.
+    \item[Driver] Software implementation of a device or peripheral interface.
+    \item[Peripheral] A hardware element internal to the controller that provides important extensions to the feature set of its core processor.
+    \item[Submodule] An isolated system packaged within \verb|extra| that extends system functionality to target source code. Submodules may only depend on the \verb|core| API.
+    \item[Target] A hardware platform on which the Australis Firmware operates.
+\end{description}
 
-\section{Section}
-
-\subsection{Subsection}
-\subsubsection{Subsubsection}
-\subsubsection{Subsubsection}
-\subsubsection{Subsubsection}
-\subsubsection{Subsubsection}
-
-\subsection{Subsection}
-\subsection{Subsection}
-\subsection{Subsection}
-\subsection{Subsection}
+\phantomsection
+\section*{Abbreviations}
+\addcontentsline{toc}{section}{Abbreviations}
+\begin{description}[leftmargin=3em,style=multiline]
+    \item[A3\footnotemark] Aurora 3
+    \item[API] Application Programming Interface
+    \item[AV2] Australis Version 2
+\end{description}
+\footnotetext{{Also refers to version 1 of the Australis flight computer hardware.}}
 
 \clearpage
 
-\section{Firmware Architecture}
-\begin{figure}[h]
-    \centering
-    \begin{tikzpicture}
-        % Core ------------------------------------------------------------------------------------
-        \node[element, minimum width=8cm, fill=pastelyellow!50](core){Australis Core};
-        \node[element, minimum width=3cm, above=5mm of core.north, xshift=-2.15cm, fill=pastelgreen!50](core_state){State};
-        \node[element, minimum width=3cm, above=5mm of core.north, xshift=2.15cm, fill=pastelgreen!50](core_devices){Devices};
-        % Core group
-        \begin{pgfonlayer}{background}
-            \node[second_group, fit={(core_state) (core_devices)}](group_rectangle)(inner_main_group){};
-        \end{pgfonlayer}
-        \begin{pgfonlayer}{subbackground}
-            \node[group, fit={(inner_main_group) (core)}, minimum width=4cm](group_rectangle)(main_group){};
-        \end{pgfonlayer}
-        % Extra ------------------------------------------------------------------------------------
-        \node[element, minimum width=3cm, above=12.5mm of core_state.north, fill=pastelyellow!50](extra){Australis Extra};
-        \node[element, minimum width=3cm, above=12.5mm of core_devices.north](target){Target\textsuperscript{1}};
-        % Extra group
-        \begin{pgfonlayer}{background}
-            \node[group, fit={(extra) (target)}, minimum width=8.5cm](group_rectangle)(extra_group){};
-        \end{pgfonlayer}
-        % Legend -----------------------------------------------------------------------------------
-        \node[square, minimum width=4mm, anchor=north west, above=5mm of extra_group.north west, xshift=7mm, draw=black, fill=pastelyellow, label={right:Australis Firmware}](legend_firmware){};
-        \node[square, minimum width=4mm, right=of legend_firmware, xshift=3cm, draw=black, fill=pastelgreen, label={right:Australis Interface}](legend_interface){};
-        % Subscript --------------------------------------------------------------------------------
-        \node[anchor=west](sub) at ([yshift=-7mm, xshift=-2mm]core.south west) {\textsuperscript{1} Target component is implementation specific.};
-        \useasboundingbox (current bounding box);
-        % Labels -----------------------------------------------------------------------------------
-        \node[label, left=of main_group]{Australis Core layer};
-        \node[label, left=of extra_group]{Australis Target layer};
-        % Arrows -----------------------------------------------------------------------------------
-        \draw[-Triangle,thick] (core_state.north) |- ([yshift=-5mm]target.south) -- (target.south);
-        \draw[-Triangle,thick] (core_devices.north) |- ([yshift=-5mm]extra.south) -- (extra.south);
-        \draw[Triangle-Triangle,thick] (extra.east) -- (target.west);
-    \end{tikzpicture}
-    \caption{Australis Firmware system architecture}
-\end{figure}
+\section{Section}
+\begin{tcolorbox}[colback=gray!50,enhanced,boxrule=0pt,frame hidden]
+    \paragraph{Note} This is a dark box
+\end{tcolorbox}
+
+\subsection{Subsection}
+\begin{tcolorbox}[colback=gray!5, breakable, enhanced]
+    \paragraph{Note}
+    Footnotes do not work correctly in most environments, like here. To get around this we use \verb|\footnotemark| to define the location of the footnote marker, and \verb|\footnotetext{text}| later outside of the environment.\footnotemark
+\end{tcolorbox}
+\footnotetext{This is a footnote.}
+
+Footnotes can be created normally with \verb|\footnote{text}| when called outside of an environment.\footnote{This is another footnote.}
+
+Citations are created in IEEE style with Biblatex.\cite{example2}
+
+\subsubsection{Subsubsection}
+
+{% Wrap this table with parentheses like so to only apply captionsetup to the one table
+\captionsetup{justification=raggedright,singlelinecheck=false}
+\begin{table}[h]
+  \begin{tabularx}{0.3\textwidth}{lX}
+    Column 1 & Column 2\\
+    \midrule
+    Text     & Text\\
+    \midrule
+  \end{tabularx}
+  \caption{Left aligned table with no row colouring}
+\end{table}
+}
+
+\begin{table}[h]
+  \centering
+  \rowcolors{2}{}{green!25}
+  \begin{tabularx}{0.3\textwidth}{lX}
+    \toprule
+    \rowcolor{blue!25}
+    Column 1 & Column 2\\
+    \midrule
+    Text     & Text\\
+    \midrule
+    Text     & Text\\
+    \midrule
+    Text     & Text\\
+    \bottomrule
+  \end{tabularx}
+  \caption{Center aligned table with row colouring}
+\end{table}
+
+\begin{table}[h]
+  \rowcolors{2}{}{green!25}
+  \centerline{\begin{tabularx}{\headwidth}{lX}
+    \rowcolor{blue!25}
+    Column 1 & Column 2\\
+    \midrule
+    Text     & Text\\
+    \midrule
+  \end{tabularx}}
+  \caption{Full headwidth table extending past margins}
+\end{table}
+
+\noindent\lipsum[1][1-18]
 
 \clearpage
 
